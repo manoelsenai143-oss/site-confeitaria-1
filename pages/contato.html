@@ -10,14 +10,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Caacupe+One&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sekuya&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caacupe+One&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sekuya&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 </head>
 <body>
 
     <header>
-        <!-- Adicionei a classe logo-container -->
         <div class="logo-container">
             <img src="../img/logo.png" alt="Logo Doce Detalhe Confeitaria" class="logo">
         </div>
@@ -26,9 +25,7 @@
             <h1>CONFEITARIA DO MANOEL</h1>
             <nav>
                 <ul>
-                    <!-- Como estamos na pasta pages, "../index.html" volta para a raiz e acha a home -->
                     <li><a href="../index.html">INÍCIO</a></li>
-                    <!-- Os outros estão na mesma pasta, então o link é direto -->
                     <li><a href="sobre.html">SOBRE</a></li>
                     <li><a href="cardapio.html">CARDÁPIO</a></li>
                     <li><a href="contato.html" class="active">CONTATO</a></li>
@@ -41,7 +38,7 @@
         <h2>FAÇA SEU PEDIDO</h2>
         <p class="subtitulo">Preencha os dados abaixo e entraremos em contato para confirmar a entrega.</p>
 
-        <form action="#" method="POST" class="form-pedido">
+        <form action="#" method="POST" class="form-pedido" id="formPedido">
             
             <fieldset>
                 <legend>Dados Pessoais</legend>
@@ -109,9 +106,20 @@
                 </div>
             </fieldset>
 
-            <button type="submit" class="btn-enviar">Finalizar Pedido</button>
+            <button type="submit" class="btn-enviar" id="btnFinalizar">Finalizar Pedido</button>
 
         </form>
+
+        <div id="area-pix" style="display: none; text-align: center; margin-top: 30px; padding: 20px; border: 2px dashed #E88C7D; border-radius: 8px; background-color: #fff;">
+            <h3 style="color: #E88C7D; margin-bottom: 15px;">Pagamento via PIX</h3>
+            <p>Escaneie o QR Code abaixo ou copie o código:</p>
+            
+            <div id="qrcode" style="display: flex; justify-content: center; margin: 20px 0;"></div>
+            
+            <input type="text" id="pix-copia-cola" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px; font-size: 12px; text-align: center;">
+            
+            <button type="button" onclick="copiarPix()" style="padding: 10px 20px; background-color: #E88C7D; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Copiar Código PIX</button>
+        </div>
     </main>
 
     <script>
@@ -122,14 +130,95 @@
         function calcularTotal() {
             const preco = parseFloat(selectItem.options[selectItem.selectedIndex].getAttribute('data-preco')) || 0;
             const quantidade = parseInt(inputQtde.value) || 1;
-            
             const total = preco * quantidade;
-
             inputTotal.value = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
         selectItem.addEventListener('change', calcularTotal);
         inputQtde.addEventListener('input', calcularTotal);
+
+        const CHAVE_PIX = "12345678900"; 
+        const NOME_RECEBEDOR = "CONFEITARIA DO MANOEL"; 
+        const CIDADE_RECEBEDOR = "SAO PAULO"; 
+
+        document.getElementById('formPedido').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            const formaPagamento = document.querySelector('input[name="pagamento"]:checked').value;
+            const valorTotalStr = inputTotal.value;
+
+            if (formaPagamento === 'pix') {
+                const valorLimpo = parseFloat(valorTotalStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+                
+                if (isNaN(valorLimpo) || valorLimpo === 0) {
+                    alert("Por favor, selecione um item e a quantidade.");
+                    return;
+                }
+
+                const payloadPix = gerarPayloadPix(CHAVE_PIX, NOME_RECEBEDOR, CIDADE_RECEBEDOR, valorLimpo);
+                
+                document.getElementById('area-pix').style.display = 'block';
+                document.getElementById('pix-copia-cola').value = payloadPix;
+
+                document.getElementById('qrcode').innerHTML = ''; 
+                const qr = qrcode(0, 'M');
+                qr.addData(payloadPix);
+                qr.make();
+                document.getElementById('qrcode').innerHTML = qr.createImgTag(5, 0);
+
+                document.getElementById('btnFinalizar').style.display = 'none';
+            } else {
+                alert("Pedido anotado! Entraremos em contato pelo WhatsApp para combinar o pagamento.");
+                this.reset(); 
+                calcularTotal();
+            }
+        });
+
+        function gerarPayloadPix(chave, nome, cidade, valor) {
+            const formatar = (id, valor) => {
+                let tamanho = valor.length.toString().padStart(2, '0');
+                return id + tamanho + valor;
+            };
+
+            let payload = "000201"; 
+            payload += "26" + formatar("00", "br.gov.bcb.pix") + formatar("01", chave); 
+            payload += "52040000"; 
+            payload += "5303986"; 
+            payload += "54" + formatar("", valor.toFixed(2)); 
+            payload += "5802BR"; 
+            payload += "59" + formatar("", nome.substring(0, 25)); 
+            payload += "60" + formatar("", cidade.substring(0, 15)); 
+            payload += "62070503***"; 
+            payload += "6304"; 
+            
+            function crc16(str) {
+                let crc = 0xFFFF;
+                for (let c = 0; c < str.length; c++) {
+                    crc ^= str.charCodeAt(c) << 8;
+                    for (let i = 0; i < 8; i++) {
+                        if (crc & 0x8000) {
+                            crc = (crc << 1) ^ 0x1021;
+                        } else {
+                            crc <<= 1;
+                        }
+                    }
+                }
+                return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+            }
+
+            return payload + crc16(payload);
+        }
+
+        function copiarPix() {
+            const inputPix = document.getElementById('pix-copia-cola');
+            inputPix.select();
+            inputPix.setSelectionRange(0, 99999); 
+            navigator.clipboard.writeText(inputPix.value).then(() => {
+                alert("Código PIX copiado com sucesso!");
+            }).catch(err => {
+                alert("Erro ao copiar. Por favor, selecione e copie manualmente.");
+            });
+        }
     </script>
 
 </body>
