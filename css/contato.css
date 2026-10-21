@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #FAF4EE; 
+    color: #000;
+}
+
+header {
+    background-color: #FAF4EE;
+    display: flex;
+    align-items: center;
+    padding: 20px 50px;
+    position: relative;
+    margin-bottom: 20px;
+    z-index: 10; /* Garante que o cabeçalho fique acima de outros elementos */
+}
+
+.logo-container {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* CORREÇÃO: Impede que a caixa da logo bloqueie os cliques no menu */
+}
+
+.logo {
+    width: 120px; 
+    pointer-events: auto; /* Permite clicar na imagem se necessário */
+}
+
+.header-content {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+header h1 {
+    font-family: 'Caacupé One', cursive;
+    color: #E88C7D; 
+    font-size: 3rem;
+    font-weight: 400; 
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+nav a {
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+    color: #E88C7D;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 20; /* Garante que os links fiquem clicáveis */
+}
+
+nav a:hover, nav a.active {
+    color: #c96a5b; 
+    text-decoration: underline;
+}
+
+.contato-container {
+    max-width: 800px;
+    margin: 0 auto 60px auto;
+    padding: 20px;
+}
+
+.contato-container h2 {
+    font-family: 'Caacupé One', cursive;
+    font-size: 2.8rem;
+    color: #000;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.subtitulo {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+.form-pedido {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    border: 2px solid #E88C7D;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+fieldset {
+    border: none;
+    margin-bottom: 30px;
+}
+
+legend {
+    font-family: 'Caacupé One', cursive;
+    font-size: 1.5rem;
+    color: #E88C7D;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #FAF4EE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+label {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+select {
+    font-family: 'Open Sans', sans-serif;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #E88C7D;
+    background-color: #fff;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    color: #495057;
+    font-weight: bold;
+    cursor: not-allowed;
+    border-color: #ced4da;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.radio-group label {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    accent-color: #E88C7D; 
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.btn-enviar {
+    font-family: 'Caacupé One', cursive;
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #E88C7D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn-enviar:hover {
+    background-color: #c96a5b;
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .logo-container {
+        position: static;
+        transform: none;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .form-pedido {
+        padding: 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .radio-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

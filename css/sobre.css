@@ -1,0 +1,175 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Sekuya", system-ui; 
+    background-color: #FAF4EE; 
+    color: #000;
+}
+
+header {
+    background-color: #FAF4EE;
+    display: flex;
+    align-items: center;
+    padding: 20px 50px;
+    position: relative;
+}
+
+.logo-container {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.logo {
+    width: 120px; 
+}
+
+.header-content {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+header h1 {
+    font-family: "Sekuya", system-ui; 
+    color: #E88C7D; 
+    font-size: 3rem;
+    font-weight: 400; 
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #E88C7D;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+    color: #c96a5b; 
+    text-decoration: underline;
+}
+
+.banner {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.sobre-container {
+    padding: 50px 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sobre-container h2 {
+    font-family: "Sekuya", system-ui;
+    font-size: 2.8rem;
+    color: #000;
+    margin-bottom: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.descricao {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #000;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+}
+
+.titulo-cardapio {
+    margin-top: 40px;
+}
+
+.cardapio-preview {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.card {
+    background-color: #fff;
+    border: 2px solid #E88C7D; 
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px); 
+}
+
+.card h3 {
+    color: #E88C7D;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.card p {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .logo-container {
+        position: static;
+        transform: none;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .banner {
+        height: 200px;
+    }
+
+    .sobre-container h2 {
+        font-size: 2rem;
+    }
+}

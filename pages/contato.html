@@ -1,1 +1,136 @@
-www
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faça seu Pedido - Confeitaria do Manoel</title>
+
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/contato.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caacupe+One&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sekuya&display=swap"
+        rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <!-- Adicionei a classe logo-container -->
+        <div class="logo-container">
+            <img src="../img/logo.png" alt="Logo Doce Detalhe Confeitaria" class="logo">
+        </div>
+        
+        <div class="header-content">
+            <h1>CONFEITARIA DO MANOEL</h1>
+            <nav>
+                <ul>
+                    <!-- Como estamos na pasta pages, "../index.html" volta para a raiz e acha a home -->
+                    <li><a href="../index.html">INÍCIO</a></li>
+                    <!-- Os outros estão na mesma pasta, então o link é direto -->
+                    <li><a href="sobre.html">SOBRE</a></li>
+                    <li><a href="cardapio.html">CARDÁPIO</a></li>
+                    <li><a href="contato.html" class="active">CONTATO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contato-container">
+        <h2>FAÇA SEU PEDIDO</h2>
+        <p class="subtitulo">Preencha os dados abaixo e entraremos em contato para confirmar a entrega.</p>
+
+        <form action="#" method="POST" class="form-pedido">
+            
+            <fieldset>
+                <legend>Dados Pessoais</legend>
+                
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone / WhatsApp:</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço de Entrega:</label>
+                    <input type="text" id="endereco" name="endereco" placeholder="Rua, Número, Bairro e CEP" required>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Informações do Pedido</legend>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item">Item Escolhido:</label>
+                        <select id="item" name="item" required>
+                            <option value="" data-preco="0">Selecione um bolo...</option>
+                            <option value="chocolate" data-preco="50.00">Bolo de Chocolate - R$ 50,00</option>
+                            <option value="morango" data-preco="60.00">Bolo de Morango - R$ 60,00</option>
+                            <option value="laranja" data-preco="45.00">Bolo de Laranja - R$ 45,00</option>
+                            <option value="cenoura" data-preco="40.00">Bolo de Cenoura - R$ 40,00</option>
+                            <option value="abacaxi" data-preco="55.00">Bolo de Abacaxi - R$ 55,00</option>
+                            <option value="cereja" data-preco="65.00">Bolo de Cereja - R$ 65,00</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qtde">Quantidade:</label>
+                        <input type="number" id="qtde" name="qtde" min="1" value="1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="total">Valor Total (R$):</label>
+                    <input type="text" id="total" name="total" placeholder="R$ 0,00" readonly required>
+                </div>
+
+                <div class="form-group">
+                    <label>Forma de Pagamento:</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="pagamento" value="pix" required> Pix
+                        </label>
+                        <label>
+                            <input type="radio" name="pagamento" value="credito" required> Cartão de Crédito
+                        </label>
+                        <label>
+                            <input type="radio" name="pagamento" value="debito" required> Cartão de Débito
+                        </label>
+                        <label>
+                            <input type="radio" name="pagamento" value="dinheiro" required> Dinheiro
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <button type="submit" class="btn-enviar">Finalizar Pedido</button>
+
+        </form>
+    </main>
+
+    <script>
+        const selectItem = document.getElementById('item');
+        const inputQtde = document.getElementById('qtde');
+        const inputTotal = document.getElementById('total');
+
+        function calcularTotal() {
+            const preco = parseFloat(selectItem.options[selectItem.selectedIndex].getAttribute('data-preco')) || 0;
+            const quantidade = parseInt(inputQtde.value) || 1;
+            
+            const total = preco * quantidade;
+
+            inputTotal.value = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        selectItem.addEventListener('change', calcularTotal);
+        inputQtde.addEventListener('input', calcularTotal);
+    </script>
+
+</body>
+</html>
