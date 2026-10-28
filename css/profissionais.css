@@ -1,0 +1,32 @@
+table{
+    border: 1px solid;
+    border-radius: 5px; 
+}
+
+table img {
+    width: 20%;
+    border-radius: 5px;
+}
+
+table img:hover {
+    width: 50%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.sobre{
+    margin: 50px;
+}
+
+table th, table td{
+    border: 1px solid;
+    padding: 10px;
+    text-align: center;
+}
+
+table thead tr {
+font-weight: bold;
+
+}
+
+    
